@@ -38,3 +38,68 @@ body {
   display: block;
   width: 4rem;
 }
+
+.pencil-tool-container {
+  position: absolute;
+  top: 7rem;
+  left: 25vw;
+  height: 5rem;
+  width: 7rem;
+  background-color: #f1f2f6;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 3px;
+}
+
+.pencil-width-container {
+  height: 2rem;
+  background-color: orange;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pencil-width-container input {
+  width: 80%;
+}
+.pencil-color-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100% - 2rem);
+  gap: 1rem;
+}
+
+.pencil-color {
+  height: 2rem;
+  width: 1.5rem;
+  border-radius: 50%;
+}
+
+.black {
+  background-color: black;
+}
+
+.red {
+  background-color: red;
+}
+
+.blue {
+  background-color: blue;
+}
+
+.eraser-tool-container {
+  height: 2rem;
+  width: 7rem;
+  background-color: #f1f2f6;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 7rem;
+  left: 33vw;
+}
+.eraser-tool-container input {
+  width: 80%;
+}

@@ -6,6 +6,7 @@ let eraserToolCont = document.querySelector(".eraser-tool-container");
 let pencil = document.querySelector(".pencil");
 let eraser = document.querySelector(".eraser");
 let sticky = document.querySelector(".sticky");
+let upload = document.querySelector(".upload");
 let pencilFlag = false;
 let eraserFlag = false;
 
@@ -52,9 +53,7 @@ eraser.addEventListener("click", (e) => {
 });
 
 sticky.addEventListener("click", (e) => {
-  let stickyContainer = document.createElement("div");
-  stickyContainer.setAttribute("class", "sticky-container");
-  stickyContainer.innerHTML = `
+  let stickyTemplateHTML = `
      <div class="header-container">
         <div class="minimize"></div>
         <div class="remove"></div>
@@ -63,17 +62,22 @@ sticky.addEventListener("click", (e) => {
         <textarea></textarea>
       </div>
   `;
-  document.body.appendChild(stickyContainer);
-
-  stickyContainer.onmousedown = function (event) {
-    dragAndDrop(stickyContainer, event);
-  };
-
-  stickyContainer.ondragstart = function () {
-    return false;
-  };
+  createSticky(stickyTemplateHTML);
 });
+function noteActions(minimize, remove, stickyContainer) {
+  remove.addEventListener("click", (e) => {
+    stickyContainer.remove();
+  });
 
+  minimize.addEventListener("click", (e) => {
+    let noteContainer = stickyContainer.querySelector(".note-container");
+    let display = getComputedStyle(noteContainer).getPropertyValue("display");
+
+    if (display === "none") noteContainer.style.display = "block";
+    else noteContainer.style.display = "none";
+    // console.log(noteContainer);
+  });
+}
 function dragAndDrop(element, event) {
   let shiftX = event.clientX - element.getBoundingClientRect().left;
   let shiftY = event.clientY - element.getBoundingClientRect().top;
@@ -100,5 +104,48 @@ function dragAndDrop(element, event) {
   element.onmouseup = function () {
     document.removeEventListener("mousemove", onMouseMove);
     element.onmouseup = null;
+  };
+}
+
+upload.addEventListener("click", (e) => {
+  let input = document.createElement("input");
+  input.setAttribute("type", "file");
+  input.click();
+
+  input.addEventListener("change", (e) => {
+    let file = input.files[0];
+    let url = URL.createObjectURL(file);
+
+    let stickyTemplateHTML = `
+     <div class="header-container">
+        <div class="minimize"></div>
+        <div class="remove"></div>
+      </div>
+      <div class="note-container">
+        <img src="${url}">
+      </div>
+  `;
+    createSticky(stickyTemplateHTML);
+  });
+});
+
+function createSticky(stickyTemplateHTML) {
+  let stickyContainer = document.createElement("div");
+  stickyContainer.setAttribute("class", "sticky-container");
+  stickyContainer.innerHTML = stickyTemplateHTML;
+
+  document.body.appendChild(stickyContainer);
+
+  let minimize = stickyContainer.querySelector(".minimize");
+  let remove = stickyContainer.querySelector(".remove");
+
+  noteActions(minimize, remove, stickyContainer);
+
+  stickyContainer.onmousedown = function (event) {
+    dragAndDrop(stickyContainer, event);
+  };
+
+  stickyContainer.ondragstart = function () {
+    return false;
   };
 }
